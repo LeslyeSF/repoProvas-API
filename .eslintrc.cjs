@@ -16,5 +16,6 @@ module.exports = {
     'no-param-reassign': 'off', // desativa uma regra que diz que não é permitido receber parâmetro e fazer alterações nele
     camelcase: 'off', // desativa uma regra que diz que toda variável precisa ser escrita no formato camelCase
     'no-unused-vars': ['error', { argsIgnorePattern: 'next' }], // não reclamar caso a variável utilizada seja next que é usada pelos middlewares do express
+    'import/extensions': ['error', 'always'],
   },
 };

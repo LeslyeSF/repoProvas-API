@@ -1,0 +1,70 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  id       Int        @id @default(autoincrement())
+  email    String     @unique
+  password String
+  Sessions Sessions[]
+}
+
+model Terms {
+  id          Int           @id @default(autoincrement())
+  number      String        @unique
+  Disciplines Disciplines[]
+}
+
+model Teachers {
+  id                  Int                   @id @default(autoincrement())
+  name                String                @unique
+  TeachersDisciplines TeachersDisciplines[]
+}
+
+model Categories {
+  id    Int     @id @default(autoincrement())
+  name  String  @unique
+  Tests Tests[]
+}
+
+model Disciplines {
+  id                  Int                   @id @default(autoincrement())
+  name                String                @unique
+  term                Terms                 @relation(fields: [termId], references: [id])
+  termId              Int
+  TeachersDisciplines TeachersDisciplines[]
+}
+
+model TeachersDisciplines {
+  id           Int         @id @default(autoincrement())
+  teacher      Teachers    @relation(fields: [teacherId], references: [id])
+  teacherId    Int
+  discipline   Disciplines @relation(fields: [disciplineId], references: [id])
+  disciplineId Int
+  Tests        Tests[]
+}
+
+model Tests {
+  id                  Int                 @id @default(autoincrement())
+  name                String
+  pdfUrl              String
+  category            Categories          @relation(fields: [categoryId], references: [id])
+  categoryId          Int
+  teacherDiscipline   TeachersDisciplines @relation(fields: [teacherDisciplineId], references: [id])
+  teacherDisciplineId Int
+}
+
+model Sessions {
+  id     Int    @id @default(autoincrement())
+  token  String @unique
+  user   Users  @relation(fields: [userId], references: [id])
+  userId Int    @unique
+}
