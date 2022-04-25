@@ -7,6 +7,7 @@ import dotenv from 'dotenv';
 import {
   createSession,
   deleteSessionByUserId,
+  findSessionByUser,
 } from '../repositories/sessionsRepository.js';
 import {
   createNewUser,
@@ -31,7 +32,15 @@ export async function signIn(req: Request, res: Response) {
   if (!bcrypt.compareSync(user.password, verifyUser.password))
     throw { type: 'unauthorized', message: 'The password is wrong' };
 
-  const token = jwt.sign(user.email, process.env.JWT);
+  const verifySession = await findSessionByUser(verifyUser.id);
+  if (verifySession) {
+    res.status(200).send({
+      token: verifySession.token,
+    });
+    return;
+  }
+
+  const token = await jwt.sign(user.email, process.env.JWT);
 
   await createSession(verifyUser.id, token);
 

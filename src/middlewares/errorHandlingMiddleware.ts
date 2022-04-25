@@ -8,8 +8,10 @@ export default function errorHandlingMiddleware(
   res: Response,
   next: NextFunction
 ) {
-  if (error.response) {
-    return res.sendStatus(error.response.status);
+  console.log(error.type);
+
+  if (error.type) {
+    return res.send(error.message);
   }
 
   res.status(500).send(error);
