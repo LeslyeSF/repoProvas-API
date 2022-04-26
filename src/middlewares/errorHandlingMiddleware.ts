@@ -1,18 +1,38 @@
 /* eslint-disable no-unused-vars */
 import { NextFunction, Request, Response } from 'express';
+import { AxiosError } from 'axios';
+// eslint-disable-next-line import/no-unresolved
+import AppError from '../utils/errorUtils.js';
 
 // eslint-disable-next-line consistent-return
 export default function errorHandlingMiddleware(
-  error: any,
+  error: Error | AppError | AxiosError,
   req: Request,
   res: Response,
   next: NextFunction
 ) {
-  console.log(error.type);
+  console.log(error);
 
-  if (error.type) {
-    return res.send(error.message);
+  if ('response' in error) {
+    return res.sendStatus(error.response.status);
+  }
+  if ('type' in error) {
+    if (error.type === 'not_found') {
+      return res.sendStatus(404);
+    }
+
+    if (error.type === 'bad_request') {
+      return res.sendStatus(400);
+    }
+
+    if (error.type === 'conflict') {
+      return res.sendStatus(409);
+    }
+
+    if (error.type === 'unauthorized') {
+      return res.sendStatus(401);
+    }
   }
 
-  res.status(500).send(error);
+  res.sendStatus(500);
 }
