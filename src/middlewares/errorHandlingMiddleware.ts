@@ -32,6 +32,10 @@ export default function errorHandlingMiddleware(
     if (error.type === 'unauthorized') {
       return res.sendStatus(401);
     }
+
+    if (error.type === 'unprocessable_entity') {
+      return res.sendStatus(422);
+    }
   }
 
   res.sendStatus(500);

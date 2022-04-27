@@ -5,14 +5,11 @@ import 'express-async-errors';
 import routers from './routers/index.js';
 import errorHandlingMiddleware from './middlewares/errorHandlingMiddleware.js';
 
-const server = express();
+const app = express();
 
-server.use(cors());
-server.use(json());
-server.use(routers);
-server.use(errorHandlingMiddleware);
+app.use(cors());
+app.use(json());
+app.use(routers);
+app.use(errorHandlingMiddleware);
 
-const PORT = process.env.PORT || 4000;
-server.listen(PORT, () => {
-  console.log(`Running on port ${PORT}`);
-});
+export default app;

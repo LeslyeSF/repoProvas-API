@@ -5,29 +5,62 @@ import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 import {
   createSession,
+  deleteSessionByUserId,
   findSessionByUser,
 } from '../repositories/sessionsRepository.js';
-import { findUserByEmail } from '../repositories/userRepository.js';
-import userSchema from '../schemas/userSchema.js';
+import {
+  createNewUser,
+  findUserByEmail,
+} from '../repositories/userRepository.js';
+import { createUserData, User } from '../utils/authUtils.js';
 
 dotenv.config();
 
-export default async function verifySignIn(user: any) {
-  const validation = userSchema.validate(user, { abortEarly: true });
-  if (validation.error) throw { type: 'bad request' };
+export async function findUser(email: string) {
+  const user = await findUserByEmail(email);
+  if (!user) throw { type: 'not_found', message: 'The user was not found' };
+  return user;
+}
 
-  const verifyUser = await findUserByEmail(user.email);
-  if (!verifyUser)
-    throw { type: 'not found', message: 'The user was not found' };
+export async function verifyUserForLogin(user: createUserData) {
+  const verifyUser = await findUser(user.email);
   if (!bcrypt.compareSync(user.password, verifyUser.password))
     throw { type: 'unauthorized', message: 'The password is wrong' };
 
-  const verifySession = await findSessionByUser(verifyUser.id);
-  if (verifySession) return verifySession.token;
+  return verifyUser;
+}
 
-  const token = await jwt.sign(user.email, process.env.JWT);
+export async function createToken(userEmail: string, userId: number) {
+  const token = await jwt.sign(userEmail, process.env.JWT);
 
-  await createSession(verifyUser.id, token);
+  await createSession(userId, token);
 
   return token;
+}
+
+export async function getToken(user: User) {
+  const verifySession = await findSessionByUser(user.id);
+  if (verifySession) {
+    return verifySession.token;
+  }
+
+  const token = await createToken(user.email, user.id);
+
+  return token;
+}
+
+export async function verifyUserForRegister(email: string) {
+  const verifyUser = await findUserByEmail(email);
+  if (verifyUser)
+    throw { type: 'conflict', message: 'This email is already in use' };
+}
+
+export async function registerUser(user: createUserData) {
+  user.password = bcrypt.hashSync(user.password, 10);
+
+  await createNewUser(user);
+}
+
+export async function deleteSession(userId: number) {
+  await deleteSessionByUserId(userId);
 }
