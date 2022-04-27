@@ -1,6 +1,7 @@
 /* eslint-disable import/no-unresolved */
 import express, { json } from 'express';
 import cors from 'cors';
+import './setup.js';
 import 'express-async-errors';
 import routers from './routers/index.js';
 import errorHandlingMiddleware from './middlewares/errorHandlingMiddleware.js';

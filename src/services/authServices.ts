@@ -2,7 +2,6 @@
 /* eslint-disable import/no-unresolved */
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import dotenv from 'dotenv';
 import {
   createSession,
   deleteSessionByUserId,
@@ -13,8 +12,6 @@ import {
   findUserByEmail,
 } from '../repositories/userRepository.js';
 import { createUserData, User } from '../utils/authUtils.js';
-
-dotenv.config();
 
 export async function findUser(email: string) {
   const user = await findUserByEmail(email);
