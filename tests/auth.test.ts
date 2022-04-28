@@ -6,7 +6,7 @@ import prisma from '../src/db.js';
 
 describe('POST /register', () => {
   beforeEach(async () => {
-    // await prisma.$executeRaw`TRUNCATE TABLE "Users";`;
+    await prisma.$executeRaw`TRUNCATE TABLE "Users" CASCADE;`;
   });
 
   afterAll(async () => {
@@ -25,7 +25,7 @@ describe('POST /register', () => {
 
   it('returns status 409 given a duplicate data insert', async () => {
     const body = {
-      email: 'exammmkmkmple@gmail.com',
+      email: 'example@gmail.com',
       password: '123456',
     };
 
@@ -38,7 +38,7 @@ describe('POST /register', () => {
 
   it('returns status 201 given a valid data insert', async () => {
     const body = {
-      email: 'examknknkbhple@gmail.com',
+      email: 'example@gmail.com',
       password: '123456',
     };
 

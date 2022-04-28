@@ -1,10 +1,7 @@
 /* eslint-disable import/no-unresolved */
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
 import { findUserByEmail } from '../repositories/userRepository.js';
-
-dotenv.config();
 
 export default async function validateTokenMiddleware(
   req: Request,

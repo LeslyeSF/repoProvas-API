@@ -14,7 +14,7 @@ export async function signIn(req: Request, res: Response) {
 
   const { id } = await verifyUserForLogin(user);
 
-  const token = getToken({
+  const token = await getToken({
     id,
     ...user,
   });
