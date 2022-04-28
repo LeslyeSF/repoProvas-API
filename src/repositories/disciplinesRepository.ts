@@ -1,7 +1,7 @@
 /* eslint-disable import/no-unresolved */
 import prisma from '../db.js';
 
-export default async function getAllDisciplinesWithTests() {
+export async function getAllDisciplinesWithTests() {
   const disciplines = await prisma.disciplines.findMany({
     include: {
       TeachersDisciplines: {
@@ -12,4 +12,23 @@ export default async function getAllDisciplinesWithTests() {
     },
   });
   return disciplines;
+}
+
+export async function getDisciplineById(id: number) {
+  const discipline = await prisma.disciplines.findFirst({
+    where: {
+      id,
+    },
+  });
+  return discipline;
+}
+
+export async function getTeacherDisciplineById(id: number) {
+  const teacherDiscipline = await prisma.teachersDisciplines.findFirst({
+    where: {
+      id,
+    },
+  });
+
+  return teacherDiscipline;
 }

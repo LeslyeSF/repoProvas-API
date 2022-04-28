@@ -3,7 +3,7 @@ import { NextFunction, Response, Request } from 'express';
 // eslint-disable-next-line import/no-unresolved
 import userSchema from '../schemas/userSchema.js';
 
-export default function validateSchemaMiddleware(
+export default function validateUserSchemaMiddleware(
   req: Request,
   res: Response,
   next: NextFunction

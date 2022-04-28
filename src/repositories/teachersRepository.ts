@@ -1,7 +1,7 @@
 /* eslint-disable import/no-unresolved */
 import prisma from '../db.js';
 
-export default async function getAllTeachersWithTests() {
+export async function getAllTeachersWithTests() {
   const teachers = await prisma.teachers.findMany({
     include: {
       TeachersDisciplines: {
@@ -11,5 +11,11 @@ export default async function getAllTeachersWithTests() {
       },
     },
   });
+  return teachers;
+}
+
+export async function getAllTeachers() {
+  const teachers = await prisma.teachers.findMany();
+
   return teachers;
 }
