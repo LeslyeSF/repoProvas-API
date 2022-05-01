@@ -1,6 +1,7 @@
 /* eslint-disable import/no-unresolved */
 import { Router } from 'express';
 import {
+  addViews,
   getTestsByDisciplines,
   getTestsByTeachers,
   insertTest,
@@ -26,5 +27,6 @@ testsRouters.post(
   validateTestSchemaMiddleware,
   insertTest
 );
+testsRouters.put('/tests/views/:id', validateTokenMiddleware, addViews);
 
 export default testsRouters;

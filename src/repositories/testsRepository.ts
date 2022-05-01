@@ -18,8 +18,78 @@ export async function getTestById(id: number) {
   return test;
 }
 
-export async function getTestBYTeacher(teacheName: string) {
-  const test = teacheName;
+export async function getTestsByTeacher() {
+  const tests = await prisma.teachers.findMany({
+    include: {
+      TeachersDisciplines: {
+        include: {
+          discipline: true,
+          Tests: {
+            include: {
+              category: true,
+            },
+          },
+        },
+      },
+    },
+  });
 
-  return test;
+  return tests;
+}
+
+export async function getTestsByDisciplines() {
+  const tests = await prisma.disciplines.findMany({
+    include: {
+      term: true,
+      TeachersDisciplines: {
+        include: {
+          teacher: true,
+          Tests: {
+            include: {
+              category: true,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  return tests;
+}
+
+export async function getAllTests() {
+  const tests = await prisma.tests.findMany({
+    include: {
+      category: true,
+      teacherDiscipline: {
+        include: {
+          teacher: true,
+          discipline: {
+            include: {
+              term: true,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  return tests;
+}
+
+export async function getTerms() {
+  const terms = await prisma.terms.findMany();
+
+  return terms;
+}
+
+export async function updateTestViews(id: number, views: number) {
+  await prisma.tests.update({
+    where: {
+      id,
+    },
+    data: {
+      views,
+    },
+  });
 }
