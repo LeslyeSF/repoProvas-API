@@ -43,9 +43,13 @@ export async function getAllTerms() {
   return terms;
 }
 
-export async function incrementViews(id: number) {
+export async function verifyTestId(id: number) {
   const test = await getTestById(id);
   if (!test) throw { type: 'not_found' };
+  return test;
+}
 
+export async function incrementViews(id: number) {
+  const test = await verifyTestId(id);
   await updateTestViews(id, test.views + 1);
 }

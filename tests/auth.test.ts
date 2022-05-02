@@ -78,3 +78,35 @@ describe('POST /login', () => {
     expect(findSession).not.toBeNull();
   });
 });
+
+describe('POST /tests/insert', () => {
+  beforeEach(async () => {
+    await prisma.$executeRaw`TRUNCATE TABLE "Tests" CASCADE;`;
+  });
+
+  afterAll(async () => {
+    await prisma.$disconnect();
+  });
+
+  it('returns status 404 given a nonexistent categoryId', () => {});
+
+  it('returns status 404 given a nonexistent teacherDisciplineId', () => {});
+
+  it('should return 422 given a invalid body', () => {});
+
+  it('should return 201 and persist the user given a valid body', () => {});
+});
+
+describe('PUT /tests/views/:id', () => {
+  beforeEach(async () => {
+    await prisma.$executeRaw`TRUNCATE TABLE "Tests" CASCADE;`;
+  });
+
+  afterAll(async () => {
+    await prisma.$disconnect();
+  });
+
+  it('returns status 404 given a nonexistent testId', () => {});
+
+  it('returns status 200 given a valid testId', () => {});
+});

@@ -13,6 +13,77 @@ async function main() {
       password: 'leslye123',
     },
   });
+
+  await prisma.categories.upsert({
+    where: { name: 'P1' },
+    update: {},
+    create: {
+      name: 'P1',
+    },
+  });
+
+  await prisma.categories.upsert({
+    where: { name: 'P2' },
+    update: {},
+    create: {
+      name: 'P1',
+    },
+  });
+
+  await prisma.terms.upsert({
+    where: { number: '1' },
+    update: {},
+    create: {
+      number: '1',
+    },
+  });
+
+  await prisma.terms.upsert({
+    where: { number: '2' },
+    update: {},
+    create: {
+      number: '2',
+    },
+  });
+
+  await prisma.teachers.upsert({
+    where: { name: 'Josefa B.' },
+    update: {},
+    create: {
+      name: 'Josefa B.',
+    },
+  });
+
+  await prisma.disciplines.upsert({
+    where: { name: 'Literatura' },
+    update: {},
+    create: {
+      name: 'Literatura',
+      termId: 1,
+    },
+  });
+
+  await prisma.teachersDisciplines.upsert({
+    where: { id: 1 },
+    update: {},
+    create: {
+      id: 1,
+      teacherId: 1,
+      disciplineId: 1,
+    },
+  });
+
+  await prisma.tests.upsert({
+    where: { id: 1 },
+    update: {},
+    create: {
+      id: 1,
+      name: 'Literatura Romana',
+      pdfUrl: 'https://google.com',
+      categoryId: 1,
+      teacherDisciplineId: 1,
+    },
+  });
 }
 
 main()
