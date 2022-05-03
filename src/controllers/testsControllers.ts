@@ -50,3 +50,9 @@ export async function addViews(req: Request, res: Response) {
 
   res.sendStatus(200);
 }
+
+export async function getAllTests(req: Request, res: Response) {
+  const tests = await getTests();
+
+  res.status(200).send(tests);
+}
