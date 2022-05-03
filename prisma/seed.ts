@@ -4,15 +4,6 @@ import prisma from '../src/db.js';
 async function main() {
   // upsert = update/insert
   // melhor que create por que pode dar conflito em campos unicos
-  await prisma.users.upsert({
-    where: { email: 'leslye@gmail.com' },
-    update: {},
-    create: {
-      id: 1,
-      email: 'leslye@gmail.com',
-      password: 'leslye123',
-    },
-  });
 
   await prisma.categories.upsert({
     where: { name: 'P1' },
@@ -26,7 +17,7 @@ async function main() {
     where: { name: 'P2' },
     update: {},
     create: {
-      name: 'P1',
+      name: 'P2',
     },
   });
 
@@ -70,18 +61,6 @@ async function main() {
       id: 1,
       teacherId: 1,
       disciplineId: 1,
-    },
-  });
-
-  await prisma.tests.upsert({
-    where: { id: 1 },
-    update: {},
-    create: {
-      id: 1,
-      name: 'Literatura Romana',
-      pdfUrl: 'https://google.com',
-      categoryId: 1,
-      teacherDisciplineId: 1,
     },
   });
 }
